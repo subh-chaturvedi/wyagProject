@@ -275,3 +275,4 @@ class GitBlob(GitObject):
     def deserialize(self, data):
         self.blobdata = data
 
+
