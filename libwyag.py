@@ -328,7 +328,7 @@ def cmd_hash_object(args):
     with open(args.path, "rb") as fd:
         sha = object_hash(fd, args.type.encode(), repo)
         print(sha)
-        
+
 def object_hash(fd, fmt, repo=None):
     """ Hash object, writing it to repo if provided."""
     data = fd.read()
@@ -342,3 +342,5 @@ def object_hash(fd, fmt, repo=None):
         case _: raise Exception("Unknown type %s!" % fmt)
 
     return object_write(obj, repo)
+
+
