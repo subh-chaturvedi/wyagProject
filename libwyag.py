@@ -20,38 +20,24 @@ argsubparsers.required = True
 def main(argv=sys.argv[1:]):
     args = argparser.parse_args(argv)
 
-    if args.command == "add":
-        cmd_add(args)
-    elif args.command == "cat-file":
-        cmd_cat_file(args)
-    elif args.command == "check-ignore":
-        cmd_check_ignore(args)
-    elif args.command == "checkout":
-        cmd_checkout(args)
-    elif args.command == "commit":
-        cmd_commit(args)
-    elif args.command == "hash-object":
-        cmd_hash_object(args)
-    elif args.command == "init":
-        cmd_init(args)
-    elif args.command == "log":
-        cmd_log(args)
-    elif args.command == "ls-files":
-        cmd_ls_files(args)
-    elif args.command == "ls-tree":
-        cmd_ls_tree(args)
-    elif args.command == "rev-parse":
-        cmd_rev_parse(args)
-    elif args.command == "rm":
-        cmd_rm(args)
-    elif args.command == "show-ref":
-        cmd_show_ref(args)
-    elif args.command == "status":
-        cmd_status(args)
-    elif args.command == "tag":
-        cmd_tag(args)
-    else:
-        print("Bad command.")
+    match args.command:
+        case "add"          : cmd_add(args)
+        case "cat-file"     : cmd_cat_file(args)
+        case "check-ignore" : cmd_check_ignore(args)
+        case "checkout"     : cmd_checkout(args)
+        case "commit"       : cmd_commit(args)
+        case "hash-object"  : cmd_hash_object(args)
+        case "init"         : cmd_init(args)
+        case "log"          : cmd_log(args)
+        case "ls-files"     : cmd_ls_files(args)
+        case "ls-tree"      : cmd_ls_tree(args)
+        case "rev-parse"    : cmd_rev_parse(args)
+        case "rm"           : cmd_rm(args)
+        case "show-ref"     : cmd_show_ref(args)
+        case "status"       : cmd_status(args)
+        case "tag"          : cmd_tag(args)
+        case _              : print("Bad command.")
+
 
 
 
@@ -233,16 +219,14 @@ def object_read(repo, sha):
             raise Exception("Malformed object {0}: bad length".format(sha))
 
         # Pick constructor
-        if fmt == b'commit':
-            c = GitCommit
-        elif fmt == b'tree':
-            c = GitTree
-        elif fmt == b'tag':
-            c = GitTag
-        elif fmt == b'blob':
-            c = GitBlob
-        else:
-            raise Exception("Unknown type {0} for object {1}".format(fmt.decode("ascii"), sha))
+        match fmt:
+            case b'commit' : c=GitCommit
+            case b'tree'   : c=GitTree
+            case b'tag'    : c=GitTag
+            case b'blob'   : c=GitBlob
+            case _:
+                raise Exception("Unknown type {0} for object {1}".format(fmt.decode("ascii"), sha))
+
 
 
         # Call constructor and return object
